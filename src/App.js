@@ -9,7 +9,7 @@ import SearchBooks from './components/SearchBooks'
 import ListBooks from './components/ListBooks'
 
 // API
-import * as BooksAPI from './BooksAPI'
+import * as BooksAPI from './utils/BooksAPI'
 
 // Styling
 //import logo from './logo.svg';
@@ -23,95 +23,82 @@ class BooksApp extends Component {
 
 
   state = {
-    //screen: 'search' // search
     books:[],
-    shelfList:[]
+    cats:[],
+    currentyReading:[],
+    wantToRead:[],
+    read:[],
+    lib:[]
   }
+
+ 
+
 
   componentDidMount() {
     this.getBooks()
   }
 
   getBooks = () => {
+
+
     BooksAPI.getAll().then((books) => {
-      
+
       this.setState({
-        books,
-        loading: false
+        books:books,
+        currentyReading:books.filter(book => book.shelf === "currentlyReading"),
+        wantToRead:books.filter(book => book.shelf === "wantToRead"),
+        read:books.filter(book => book.shelf === "read")
       })
 
-      books.map((book) => { 
+      //get cat -- reduce doubles
+      books.map((book,shelf) => { 
         this.setState(state => {
-          state.shelfList.push(book.shelf)
-          //console.log(book.shelf)
+          state.cats.push({cat:book.shelf,id:book.id})
         })
       })
+
+
 
     })
   }
 
-  
 
-//  const { books } = this.props
-  
 
-  // state = {
-  //     showSearchPage: false
-  // }
+  changeShelf = (id,shelf) => {
+    BooksAPI.update().then((books) => {
+        console.log(this.props)
+    })      
+  }
 
-     /**
-     * TODO: Instead of using this state variable to keep track of which page
-     * we're on, use the URL in the browser's address bar. This will ensure that
-     * users can use the browser's back and forward buttons to navigate between
-     * pages, as well as provide a good URL they can bookmark and share.
-     */
 
-     // <Route exact path ='/' render={() =>(
-    //   <ListContacts 
-    //       onDeleteContact={this.removeContact} 
-    //       contacts={this.state.contacts}
-          
-    //   />
-    // )}/>
+
+
 
   render() {
-  // Here: --> const { books } = this.state
-  // In children: --> const { books } = this.props
-  
+
+
+  const {books, cats} = this.state
+  //console.log(cat)
+
   return (
+
       <div className="App">
-       
-  
 
-        {/* {this.state.screen === 'list' && (
-          <ListBooks/>
-        )}
-
-        {this.state.screen === 'search' && (
-          <SearchBooks/>
-        )} */}
-
-        
-        {/* 
-        Use render if you need to pass props
-        <Route exact path = '/' render={() => (
-        <ListBooks/>
-        )}
-        />
-        <Route exact path = '/search' render={( {history} ) => (
-        <ListBooks/>
-        )}
-        /> */}
-
-        <Route exact path='/search' component={SearchBooks} />
+        {/* <Route exact path='/search' component={SearchBooks} /> */}
+        <Route exact path='/search' render={() =>(
+            <SearchBooks
+              books = { books }              
+              cats = { cats }
+              
+            />
+        )}/>
 
         <Route exact path='/' render={() =>(
             <ListBooks
-              books = { this.state.books }
-              
+              books = { books }
+              cats = { cats }
             />
-        )}
-         />
+        )}/>
 
 
       </div>

@@ -4,46 +4,58 @@ import { Link } from 'react-router-dom'
 //import propTypes from 'prop-types'
 //COMP
 import Bookshelf from './Bookshelf'
-
+import Bookshelves from './Bookshelves'
 
 
 class ListBooks extends Component{
 
-    // static propTypes = {
-    //     books: propTypes.array.isRequired,
-    //     //onDeleteContact:propTypes.func.isRequired
-    // }
-
-
-
     render(){
-    const { books, shelfList } = this.props
-        
-    console.log( { shelfList } )
+    const {books,cats,onUpdate} = this.props
+    //console.log(books)
+    //console.log(cats)
+    
         
         return(
         <div className="list-books">
+
             <div className="list-books-title">
               <h1>MyReads</h1>
             </div>
             
             <div className="list-books-content">
                 
-                {/* replace with
-                <div className="bookshelf">
-                    <ol className="books-grid">
 
-                */}
+                {/* test to create shelf for each category */}
+                <Bookshelves
+                    books={ books }
+                    cats= { cats }
+                    sName="cat"
+                    sCat="cat"
+                    onUpdate={onUpdate}
+                />
+
 
                 <Bookshelf
                     books={ books }
-                    shelfList={ shelfList }
-                    // filter={ }
+                    sName='Currently Reading'
+                    sCat='currentlyReading'
+                    onUpdate={onUpdate}
                 />
-                {/* <CurrentlyReading/>
-                <WantToRead/>
-                <Read/> */}
+                <Bookshelf
+                    books={ books }
+                    sName='Want To Read'
+                    sCat='wantToRead'
+                    onUpdate={onUpdate}
+                />
+                <Bookshelf
+                    books={ books }
+                    sName='Read'
+                    sCat='read'
+                    onUpdate={onUpdate}
+                />
+               
 
+                
 
             </div> 
  

@@ -7,7 +7,7 @@ import BookshelfChanger from './BookshelfChanger'
 class Book extends Component{
     render(){
     //const { book } = this.props 
-    console.log(this.props.thumb.smallThumbnail)
+    //console.log(this.props.thumb.smallThumbnail)
         return(
             <li 
             key={ this.props.id }
@@ -18,7 +18,7 @@ class Book extends Component{
                     className="book-cover" 
                     style={{ width: 128, height: 193 }}></div>
                 
-                    <img src={this.props.thumb.smallThumbnail}/>
+                    <img src={this.props.thumb.smallThumbnail} alt={this.props.thumb.title}/>
                     <BookshelfChanger/>
                 
                 </div>
