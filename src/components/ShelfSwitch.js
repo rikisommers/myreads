@@ -1,14 +1,24 @@
+// Core
 import React, { Component } from 'react';
-//import { Route } from 'react-router-dom'
+// Plugins
+import propTypes from 'prop-types'
 
-class BookshelfChanger extends Component{
+class ShelfSwitch extends Component{
+// todo: add static propTypes
+
     render(){
+    const { books, book, moveBook } = this.props 
+    
+    // let currShelf = 'none'
+    // for(let item of books){
+    //     item.id === book.id
+    // }
+
         return(
             <div className="book-shelf-changer">
-                
                 <select
-                defualtvalue=""
-                onChange={(e) => this.changeShelf(e.target.value)}
+                //defualtvalue={ currShelf }
+                onChange={(event) => moveBook(book, event.target.value)}
                 >
                     <option value="none" disabled>Move to...</option>
                     <option value="currentlyReading">Currently Reading</option>
@@ -16,10 +26,9 @@ class BookshelfChanger extends Component{
                     <option value="read">Read</option>
                     <option value="none">None</option>
                 </select>
-
             </div>
         )
     }
 }
 
-export default BookshelfChanger
+export default ShelfSwitch

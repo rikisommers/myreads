@@ -10,10 +10,13 @@ import Bookshelves from './Bookshelves'
 class ListBooks extends Component{
 
     render(){
-    const {books,cats,onUpdate} = this.props
-    //console.log(books)
-    //console.log(cats)
-    
+    const { books, moveBook } = this.props
+
+    // why cant i map this from props??
+
+    const categories = [{cat:'currentlyReading', name:'currently reading'},{cat:'wantToRead', name:'want to read'},{cat:'read', name:'read'}]
+
+
         
         return(
         <div className="list-books">
@@ -23,39 +26,52 @@ class ListBooks extends Component{
             </div>
             
             <div className="list-books-content">
-                
-
-                {/* test to create shelf for each category */}
-                <Bookshelves
-                    books={ books }
-                    cats= { cats }
-                    sName="cat"
-                    sCat="cat"
-                    onUpdate={onUpdate}
-                />
-
-
-                <Bookshelf
-                    books={ books }
-                    sName='Currently Reading'
-                    sCat='currentlyReading'
-                    onUpdate={onUpdate}
-                />
-                <Bookshelf
-                    books={ books }
-                    sName='Want To Read'
-                    sCat='wantToRead'
-                    onUpdate={onUpdate}
-                />
-                <Bookshelf
-                    books={ books }
-                    sName='Read'
-                    sCat='read'
-                    onUpdate={onUpdate}
-                />
-               
 
                 
+                {categories.map((item, index) => {
+                    // place books in each category
+                    const booksInShelf= books.filter((book) => book.shelf === item.cat)
+
+                    return(
+                    //<p key={item.index} >{item.name}</p>
+
+                        <Bookshelf 
+                        key={ item.index } 
+                        booksInShelf={ booksInShelf}
+                        name={ item.name }
+                        cat={ item.cat }
+                        moveBook="{ moveBook }"
+                        />
+
+                    )
+
+                })}
+
+                {/* 
+                
+                static version
+
+                    <Bookshelf 
+                    books={ books }
+                    name='currentlyReading'
+                    cat='currentlyReading'
+                    onUpdate={onUpdate}
+                    />
+                    <Bookshelf 
+                    books={ books }
+                    name='wantToRead'
+                    cat='wantToRead'
+                    onUpdate={onUpdate}
+                    />
+                    <Bookshelf 
+                    books={ books }
+                    name='read'
+                    cat='read'
+                    onUpdate={onUpdate}
+                    />
+                
+                */}
+
 
             </div> 
  

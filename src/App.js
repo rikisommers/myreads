@@ -27,8 +27,7 @@ class BooksApp extends Component {
     cats:[],
     currentyReading:[],
     wantToRead:[],
-    read:[],
-    lib:[]
+    read:[]
   }
 
  
@@ -44,41 +43,42 @@ class BooksApp extends Component {
     BooksAPI.getAll().then((books) => {
 
       this.setState({
-        books:books,
-        currentyReading:books.filter(book => book.shelf === "currentlyReading"),
-        wantToRead:books.filter(book => book.shelf === "wantToRead"),
-        read:books.filter(book => book.shelf === "read")
+        books:books
       })
-
-      //get cat -- reduce doubles
-      books.map((book,shelf) => { 
-        this.setState(state => {
-          state.cats.push({cat:book.shelf,id:book.id})
-        })
-      })
-
-
 
     })
   }
 
 
 
-  changeShelf = (id,shelf) => {
-    BooksAPI.update().then((books) => {
-        console.log(this.props)
-    })      
+  moveBook = (book,toShelf) => {
+    console.log("changing shelves")
+
+    BooksAPI.update(book,toShelf).then(books => {
+      this.setState({
+        books:books
+      })
+    })
+    
+
+
   }
 
+  // this.setState({
+  //   books: this.state.books.map( b => {
+  //     if(b.id===book.id){
+  //       b.shelf=value
+  //     }
+  //     return b
+  //   })
+  // })
 
 
 
 
   render() {
+  const {books} = this.state
 
-
-  const {books, cats} = this.state
-  //console.log(cat)
 
   return (
 
@@ -88,15 +88,13 @@ class BooksApp extends Component {
         <Route exact path='/search' render={() =>(
             <SearchBooks
               books = { books }              
-              cats = { cats }
-              
             />
         )}/>
 
         <Route exact path='/' render={() =>(
             <ListBooks
               books = { books }
-              cats = { cats }
+              moveBook = { this.moveBook }
             />
         )}/>
 

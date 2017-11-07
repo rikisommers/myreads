@@ -38,11 +38,6 @@ class SearchBooks extends Component{
         }
     }
 
-  
-
-
-
-
 
     // updateQuery = (event) => {
     //     const value = event.target.value.trim
