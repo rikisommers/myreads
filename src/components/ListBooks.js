@@ -21,10 +21,21 @@ class ListBooks extends Component{
         return(
         <div className="list-books">
 
-            <div className="list-books-title">
-              <h1>MyReads</h1>
+            <div className="header">
+                <h1>MyReads</h1>
+                <div className="open-search">
+                
+                    <Link
+                        to='/search'
+                        //onClick={this.props.onNavigate}
+                        className='add-contact'
+                    >Add a Book</Link>
+
+                </div>
+                
+
             </div>
-            
+
             <div className="list-books-content">
 
                 
@@ -40,7 +51,7 @@ class ListBooks extends Component{
                         booksInShelf={ booksInShelf}
                         name={ item.name }
                         cat={ item.cat }
-                        moveBook="{ moveBook }"
+                        moveBook={ moveBook }
                         />
 
                     )
@@ -76,16 +87,7 @@ class ListBooks extends Component{
             </div> 
  
 
-            <div className="open-search">
-                
-
-                <Link
-                    to='/search'
-                    //onClick={this.props.onNavigate}
-                    className='add-contact'
-                >Add a Book</Link>
-
-            </div>
+            
 
         </div>
         )

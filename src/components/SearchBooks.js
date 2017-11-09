@@ -53,12 +53,37 @@ class SearchBooks extends Component{
         this.setState({ query: query.trim() })
         console.log(query)
 
-        //this.getResults(query)
-        BooksAPI.search(query, 20).then((books) => {
-  
-            books.length > 0 ? this.setState({results:books}) : this.setState({results:[]})
-            console.log(results)
-        })
+
+        if (query === '' || query === undefined){
+            this.setState({ results: [] });
+            console.log("no pass")
+            return;
+        }else{
+        
+            BooksAPI.search(query, 20).then((books) => {
+                this.setState({results:books})
+//                          console.log(this)
+                          // if()
+                          // books === Array ? (
+                          //     
+              
+                          // ) : (
+                          //     this.setState({results:[]})
+                          // )
+              
+                         // console.log(results)
+                          
+                          // if(books.length > 0){
+              
+                          // }else{
+                              
+                          // }
+              
+              
+                      })
+
+        }
+        
 
     }
 
@@ -70,7 +95,8 @@ class SearchBooks extends Component{
     render (){
     const {results}  = this.state
     const query = this.state.query
-        console.log(results.length)
+
+        console.log(results)
         return(
         <div className="search-books">
         
@@ -92,11 +118,11 @@ class SearchBooks extends Component{
 
   
 
-            {results.length > 0 && (
+            {results.length > 0 ? (
 
                 <div className="search-books-results">
-                <h1>{this.state.query}</h1>
-                <h2>your search returned {results.length} results</h2>
+
+                <h2>Search for {this.state.query} returned {results.length} results</h2>
                     <ol className="books-grid">
                         
                         {results.map(book => (
@@ -114,6 +140,11 @@ class SearchBooks extends Component{
                     </ol>
                 </div>
 
+            ):(
+
+                <div className="search-books-results">
+                    <h2>Search for {this.state.query} returned 0 results</h2>        
+                </div>
             )}
 
            

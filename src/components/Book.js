@@ -14,9 +14,17 @@ class Book extends Component{
     // }
 
     render(){
-    const { books, moveBook } = this.props 
-    //console.log( this.props )
-        
+    const { books,book, moveBook } = this.props 
+    
+    const imgURL = this.props.thumb.thumbnail  
+//    console.log(this.props.thumbnail)
+
+   // const {imgURL} = this
+//   this.props.thumb.smallThumbnail
+ //   this.props.thumb.title
+ //   this.props.title
+ //   this.props.subtitle
+    
         return(
             <li 
             key={ this.props.id }
@@ -26,24 +34,14 @@ class Book extends Component{
                 <div 
                     className="book-cover" 
                     style={{ width: 128, height: 193 }}></div>
-                
-                    <img src={this.props.thumb.smallThumbnail} alt={this.props.thumb.title}/>
-                    
-                    {/* 
-                    too much nesting?
-                    */}
-                    
-                    <ShelfSwitch
-                        books = { books }
-                        book = { this.props.id }
-                        moveBook = { moveBook  }
-                    />
-                
+                        
+                        <img src={imgURL} alt={this.props.thumb.title}/>
+    
+                 
                     {/* <div className="book-shelf-changer">
-                
                         <select
                         //defualtvalue={ currShelf }
-                       // onChange={(e) => changeShelf(book, e.target.value)}
+                        onChange={(event) => moveBook(book, event.target.value)}
                         >
                             <option value="none" disabled>Move to...</option>
                             <option value="currentlyReading">Currently Reading</option>
@@ -51,10 +49,14 @@ class Book extends Component{
                             <option value="read">Read</option>
                             <option value="none">None</option>
                         </select>
-
                     </div> */}
 
-
+                    <ShelfSwitch
+                        //defualtvalue={ currShelf }
+                        books = { this.props.books }
+                        book = { this.props }
+                        moveBook = { this.props.moveBook  }
+                    />
 
                 </div>
                 <div className="book-title">{this.props.title}</div>

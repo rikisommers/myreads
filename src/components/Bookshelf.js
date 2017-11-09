@@ -16,19 +16,8 @@ class Bookshelf extends Component{
   // onUpdate={onUpdate}
 
 
-
-
     render(){
     const { booksInShelf,name,cat,moveBook} = this.props 
-
-    console.log( this.props )
-
-
-
-  
-
-    
-
         return( 
             <div className="bookshelf">
               <h2 className="bookshelf-title">{ name }</h2>
@@ -53,6 +42,7 @@ class Bookshelf extends Component{
           </div>
         )
     }
+    
 }
 
 export default Bookshelf

@@ -8,16 +8,22 @@ class ShelfSwitch extends Component{
 
     render(){
     const { books, book, moveBook } = this.props 
+    // console.log( this.props.moveBook )
     
-    // let currShelf = 'none'
+
+    
+    let defualtShelf = 'none'
+    let currShelf = book.shelf
+
     // for(let item of books){
     //     item.id === book.id
     // }
 
         return(
             <div className="book-shelf-changer">
+                <p>{currShelf}</p>
                 <select
-                //defualtvalue={ currShelf }
+                defualtvalue={ currShelf }
                 onChange={(event) => moveBook(book, event.target.value)}
                 >
                     <option value="none" disabled>Move to...</option>
