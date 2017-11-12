@@ -1,147 +1,87 @@
-// Core
 import React, { Component } from 'react';
-// Plugins
 import { Link } from 'react-router-dom'
-//import {PropTypes} from 'prop-types'
-// Components
+import {DebounceInput} from 'react-debounce-input';
 import Book from './Book'
-// API
-import * as BooksAPI from '../utils/BooksAPI'
-
 
 class SearchBooks extends Component{
-    
-    
-    state= {
-        query:'',
-        books:[],
-        results:[],
-        error : false
 
-    }
-
-    clearResults = () => {
-        this.setState({
-            query:'',
-            results:[]
-        })
-    }
-
-    // event onChange
-    searchBooks = (query) => {
-     
-
-        //this.props.book.shelf ? cShelf = this.props.book.shelf : cShelf = 'none'
-        //loop trough if book is in lib update shelf or ..
-          
-        this.setState({ query: query })
-
-        if (query){
-            
-            BooksAPI.search(query, 20).then((searchResults) => {
-                                      
-                    if(searchResults.length > 0){
-
-                        let res = []
-                        res = searchResults.map(b => {     
-                            
-                            console.log(b)
-                            
-                            let match = this.props.books.find(book => (book.id === b.id ))
-                            if(match){
-                                b.shelf = match.shelf
-                                return b
-                            }
-                            return b
-    
-                        })
-
-                        this.setState({
-                        results:res,
-                        error:false
-                        })
-
-                    }else{
-                        this.setState({
-                            results:[],
-                            error:true
-                        })
-                    }
-                    //searchResults.length > 0 ? this.setState() : this.setState({results:[]})
-                    
-            })
-            
-        }else{
-            this.setState({
-                results:[],
-                error:false
-            })
-            console.log('empty query')
-        }
+    render() {
         
-    }
-
-
-
-    
-render() {
-    const {results, query, error}  = this.state
-    const {books, moveBook} = this.props
+        const { query, results, moveBook, searchBooks } = this.props
 
         return(
         
             <div className="search-books">
 
                 <div className="search-books-bar">
-                <Link to="/" className="close-search">Close</Link>
+                    
+                    <Link to="/" className="close-search">Close</Link>
 
                     <div className="search-books-input-wrapper">
 
-                    <input type="text" 
+                        {/* <input type="text" 
+                            placeholder='search books'
+                            value={ query }
+                            onChange={
+                                (e) => searchBooks(e.target.value)
+                            }
+                        /> */}
+
+                        <DebounceInput
                         placeholder='search books'
+                        minLength={1}
                         value={ query }
+                        debounceTimeout={300}
                         onChange={
-                            (e) => this.searchBooks(e.target.value)
+                            (e) => searchBooks(e.target.value)
                         }
-                    />
+                        />
+
             
                     </div>
                 </div>
                 
-                { results.length > 0 && (
-                    <div className="search-books-results">
 
-                        <h2><em>{ query }</em> returned { results.length } results</h2>
-                    
-                        <ol className="books-grid">
+       
+                    <div className="search-books-results">
+           
+       
+                        
+
+                        {console.log(results)}
+
+                        { results.length > 0 && (
+                            <div>
                             
-                            {results.map((book) => (
-                                <li key={ book.id }>
-                                    <Book
-                                    book={ book }
-                                    books={ books }
-                                    moveBook={ moveBook }
-                                    /> 
-                            </li>
-                            ))}
+                                <h1>test</h1>
+                                <ol className="books-grid">
 
-                        </ol>
-                    </div>
-                )}
-                { error === true && (
-                    <div className="search-books-results">
+                                    {results.map(book => (
+                                        <li key={ book.id }>
+                                            <Book
+                                            book={ book }
+                                            moveBook={ moveBook }
+                                            /> 
+                                    </li>
+                                    ))}
 
-                        <h2>no results</h2>
-                    
+                                </ol>
+                            </div>
+                        )}
+
+                        {/* {noResults ? <h3>No results found</h3> : (
+                        )} */}
+
+
+
                     </div>
-                )}
-                
-                   
-        </div>
+
+
+            </div>
         )
 
     }
-
+    
 
 }
 export default SearchBooks

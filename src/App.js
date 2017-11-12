@@ -1,123 +1,148 @@
-// Core
 import React, { Component } from 'react';
-
-// Plugins
 import { Route } from 'react-router-dom'
-
-// Components
 import ListBooks from './components/ListBooks'
 import SearchBooks from './components/SearchBooks'
-
-// API
 import * as BooksAPI from './utils/BooksAPI'
-
-// Styling
-//import logo from './logo.svg';
 import './App.css';
-
-
 
 
 class BooksApp extends Component {
 
+    state = {
+      books:[],
+      results:[],
+      searchErr: false,
+      query:''
+    }
 
+    componentDidMount() {
+      this.getBooks();
+    }
 
-  state = {
-    books:[]
-  }
-
-  componentDidMount() {
-    BooksAPI.getAll().then((books) => {
-      this.setState({
-        books:books
+    getBooks = () => {
+      BooksAPI.getAll().then((books) => {
+        this.setState({
+          books:books
+        })
       })
-    })
-  }
+    }
+
+    //.sort(sortBy('title'));
+    findBook = (books, book) => (
+      books.find((b) => (b.id === book.id))
+    )
+
+    rmFromResults = (bookId) => {
+      const res = this.state.results.filter(
+        book => book.id !== bookId
+      )
+      this.setState({ results: res })
+    }
+
+    moveBook = (bookMoving, toShelf) => {
+      BooksAPI.update(bookMoving, toShelf).then(() => (
+        this.getBooks()
+      ))
+      this.rmFromResults(bookMoving.id)
+      console.log('moved book & removed from results')
+    }
 
 
-//return book in books  
-findBook = (books, book) => (
-  books.find((b) => (b.id === book.id))
-)
+    syncSearchAndShelvesItems = booksFromSearch => {
+    const shelfBooksIds = this.state.books.map(book => book.id);
+    let mergedBooks = [];
 
-moveBook = (bookMoving, toShelf) => (
-    
-  BooksAPI.update(bookMoving, toShelf).then(() => (
-    
-    this.setState(state => {
+    if (Array.isArray(booksFromSearch)) {
+      mergedBooks = booksFromSearch.map(searchedBook => {
+        if (shelfBooksIds.includes(searchedBook.id)) {
+          return this.state.books.find(shelfBook => shelfBook.id === searchedBook.id);
+        } else {
+          return searchedBook;
+        }
+      })
+    }
 
-      let books = state.books
-      console.log("changing shelves to:" + toShelf)  
+    return mergedBooks;
+    };
 
-      let bookToMove = this.findBook(books,bookMoving)
-      // if book found in lib , which it always wil be
-      if(bookToMove){
+
+    // event onChange
+    searchBooks = (query) => {
+
+
+      this.setState({ query: query })
       
-          if(toShelf === 'none'){
-            // if removing from lib return books - book
-            books = books.filter(b => b.id === bookToMove.id)
-            
-          }else{
-            // find matching book and update shelf
-            books = books.map((b) => {    
-              if(b.id === bookToMove.id){
-                b.shelf = toShelf
-              }
-              return b
-            })
+      if (query.length > 0){
+        BooksAPI.search(query, 20).then((results) => {
 
-          }
-    
+          this.setState({ results: this.syncSearchAndShelvesItems(results) })
+
+            // if(results.length > 0){
+
+            //     let res = []
+            //     res = results.map(b => {     
+                    
+            //         let match = this.state.books.find(book => (book.id === b.id ))
+            //         if(match){
+            //             b.shelf = match.shelf
+            //             return b
+            //         }else{
+            //             return b
+            //         }
+
+            //     })
+            //     this.setState({
+            //       results:res
+            //     })
+
+
+            // }else{
+            //   //this.setState({ results: []})
+            //   console.log('no results')
+            // }
+
+
+        })
+
       }else{
-          //
-          books = books.concat(bookToMove)
+        this.setState({ results:[]})
+        
       }
+    }
     
-      return { books:books }
+    clearResults = () => {
+      this.setState({
+          query:'',
+          results:[]
+      })
+    }
 
-    })
-    
-  ))
+    render() {
+      const { books, results, query, searchErr} = this.state
 
-)
+        return (
+            <div className="App">
+      
+              <Route exact path='/search' render={({history}) =>(
+                <SearchBooks
+                  query = { query }      
+                  results= { results }
+                  searchErr= { searchErr }
+                  searchBooks = { this.searchBooks }
+                  moveBook = { this.moveBook }        
+                />
+              )}/>
+              <Route exact path='/' render={() =>(
+                  <ListBooks
+                    books = { books }
+                    moveBook = { this.moveBook }
+                  />
+              )}/>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-render() {
-  const { books } = this.state
-
-
-    return (
-        <div className="App">
-    
-          <Route exact path='/search' render={({history}) =>(
-            <SearchBooks
-              books = { books }      
-              results = { books }
-              moveBook = { this.moveBook }        
-            />
-          )}/>
-          <Route exact path='/' render={() =>(
-              <ListBooks
-                books = { books }
-                moveBook = { this.moveBook }
-              />
-          )}/>
-
-        </div>
-        );
+            </div>
+        )
     }
 }
+    
 
 export default BooksApp;

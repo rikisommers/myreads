@@ -11,12 +11,11 @@ class Book extends Component{
     
     static propTypes = {
         book: propTypes.object.isRequired,
-        books: propTypes.array.isRequired,
         moveBook: propTypes.func.isRequired
     }
 
     render(){
-    const { book, books, moveBook } = this.props 
+    const { book, moveBook } = this.props 
     //console.log(book)
     //console.log(books)
     return(
@@ -28,7 +27,6 @@ class Book extends Component{
             
                     <ShelfSwitch
                         book = { book }
-                        books = { books }
                         moveBook = { moveBook }
                     />
 

@@ -1,13 +1,10 @@
-// Core
 import React, { Component } from 'react';
-// Components
 import Book from './Book'
-
 
 class Bookshelf extends Component{
 
     render(){
-    const { booksInShelf,catName,books,moveBook} = this.props 
+    const { booksInShelf,catName,moveBook} = this.props 
         return( 
             <div className="bookshelf">
               <h2 className="bookshelf-title">{ catName }</h2>
@@ -18,7 +15,6 @@ class Bookshelf extends Component{
                     <li key={ book.id }>
                       <Book
                         book={ book }
-                        books={ books }
                         moveBook={ moveBook }
                       />  
                     </li>
