@@ -1,36 +1,28 @@
 // Core
 import React, { Component } from 'react';
-// Plugins
-import propTypes from 'prop-types'
+
 
 class ShelfSwitch extends Component{
-// todo: add static propTypes
 
     render(){
-    const { books, book, moveBook } = this.props 
-    // console.log( this.props.moveBook )
-    
-
-    
-    let defualtShelf = 'none'
-    let currShelf = book.shelf
-
-    // for(let item of books){
-    //     item.id === book.id
-    // }
+    const { book, moveBook } = this.props 
+        // try setting in state
+        let cShelf = 'none'
+        // TODO :: loop all shelves set active
+        this.props.book.shelf ? cShelf = this.props.book.shelf : cShelf = 'none'
 
         return(
             <div className="book-shelf-changer">
-                <p>{currShelf}</p>
                 <select
-                defualtvalue={ currShelf }
+                value={cShelf}
                 onChange={(event) => moveBook(book, event.target.value)}
                 >
-                    <option value="none" disabled>Move to...</option>
+                    <option disabled>Move to...</option>
+                    <option value="none">None</option>
                     <option value="currentlyReading">Currently Reading</option>
                     <option value="wantToRead">Want to Read</option>
                     <option value="read">Read</option>
-                    <option value="none">None</option>
+
                 </select>
             </div>
         )

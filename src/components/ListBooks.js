@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom'
 //import propTypes from 'prop-types'
 //COMP
 import Bookshelf from './Bookshelf'
-import Bookshelves from './Bookshelves'
 
 
 class ListBooks extends Component{
@@ -41,16 +40,18 @@ class ListBooks extends Component{
                 
                 {categories.map((item, index) => {
                     // place books in each category
+                    
                     const booksInShelf= books.filter((book) => book.shelf === item.cat)
 
                     return(
                     //<p key={item.index} >{item.name}</p>
-
+                    
                         <Bookshelf 
-                        key={ item.index } 
+                        key={ index } 
+                        books={ books }
                         booksInShelf={ booksInShelf}
-                        name={ item.name }
                         cat={ item.cat }
+                        catName={ item.name }
                         moveBook={ moveBook }
                         />
 

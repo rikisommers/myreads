@@ -23,139 +23,101 @@ class BooksApp extends Component {
 
 
   state = {
-    books:[],
-    cats:[],
-    currentyReading:[],
-    wantToRead:[],
-    read:[]
+    books:[]
   }
-
- 
-
 
   componentDidMount() {
-    this.getBooks()
-  }
-
-
-
-  getBooks = () => {
     BooksAPI.getAll().then((books) => {
-
       this.setState({
         books:books
       })
-
     })
   }
 
 
+//return book in books  
+findBook = (books, book) => (
+  books.find((b) => (b.id === book.id))
+)
 
-  moveBook = (book,toShelf) => {
-    console.log("changing shelves")
-    console.log(book)
-    console.log(toShelf)
+moveBook = (bookMoving, toShelf) => (
     
-    let books = this.state.books
+  BooksAPI.update(bookMoving, toShelf).then(() => (
     
-    console.log(books)
-    
-    // get books[] without book
-    // let shelf = books.filter((b) => b.shelf === book.shelf).filter((b) => b.id !== book.id)
-    //book.shelf = toShelf
+    this.setState(state => {
 
-    // concat book toShelf
-    // let destShelf = books.filter((b) => b.shelf === book.shelf).concat(book)
-    // console.log(destShelf)
+      let books = state.books
+      console.log("changing shelves to:" + toShelf)  
 
-  // ALT MOVE BOOKS 
-
-  //   moveBook = (book,toShelf) => {
-  //     console.log("Moving book to shelf")
-  //     BooksApi.update(book,toShelf).then(this.updateBookList())
-  // }
-
-
-  // updateBookList = () => {
-  //     console.log("Getting all books")
-  //     BooksApi.getAll().then((books)=>{
-  //         console.log("Receiving promise - The books are")
-  //         console.log(books)
-  //         this.setState({
-  //             booksReading: books.filter(book=>(book.shelf==="currentlyReading")),
-  //             booksToRead: books.filter(book=>(book.shelf==="wantToRead")),
-  //             booksRead: books.filter(book=>(book.shelf==="read")),
-  //         })}
-  //     )
-  // }
-
-
-    BooksAPI.update(book,toShelf).then(books => {
+      let bookToMove = this.findBook(books,bookMoving)
+      // if book found in lib , which it always wil be
+      if(bookToMove){
       
-      //book.shelf = toShelf
+          if(toShelf === 'none'){
+            // if removing from lib return books - book
+            books = books.filter(b => b.id === bookToMove.id)
+            
+          }else{
+            // find matching book and update shelf
+            books = books.map((b) => {    
+              if(b.id === bookToMove.id){
+                b.shelf = toShelf
+              }
+              return b
+            })
 
-      // this.setState({
-      //   books: this.state.books.map( b => {
-      //     if(b.id===book.id){
-      //       b.shelf=value
-      //     }
-      //     return b
-      //   })
-      // })
-
-      let updatedBooks = books.filter((b) => b.id !== book.id).push(book)
-      
-      this.setState({
-        books:updatedBooks
-      })
+          }
+    
+      }else{
+          //
+          books = books.concat(bookToMove)
+      }
+    
+      return { books:books }
 
     })
-
-
-    // this.setState({
-    //   books:updatedBooks
-    // })
-
-
-   
     
-  }
+  ))
 
-  // this.setState({
-  //   books: this.state.books.map( b => {
-  //     if(b.id===book.id){
-  //       b.shelf=value
-  //     }
-  //     return b
-  //   })
-  // })
+)
 
 
 
 
-  render() {
-  const {books} = this.state
 
 
-  return (
-      <div className="App">
-   
-        <Route exact path='/search' render={() =>(
-        <SearchBooks
-        books = { books }              
-        />
-        )}/>
-        <Route exact path='/' render={() =>(
-            <ListBooks
-              books = { books }
-              moveBook = { this.moveBook }
+
+
+
+
+
+
+
+
+render() {
+  const { books } = this.state
+
+
+    return (
+        <div className="App">
+    
+          <Route exact path='/search' render={({history}) =>(
+            <SearchBooks
+              books = { books }      
+              results = { books }
+              moveBook = { this.moveBook }        
             />
-        )}/>
+          )}/>
+          <Route exact path='/' render={() =>(
+              <ListBooks
+                books = { books }
+                moveBook = { this.moveBook }
+              />
+          )}/>
 
-
-      </div>
-      );
-  }
+        </div>
+        );
+    }
 }
 
 export default BooksApp;

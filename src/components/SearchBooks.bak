@@ -16,6 +16,7 @@ class SearchBooks extends Component{
         query:'',
         books:[],
         results:[],
+        //stateResults:[],
         error : false
 
     }
@@ -27,25 +28,51 @@ class SearchBooks extends Component{
         })
     }
 
+    //return book in books  
+    findBook = (books, book) => (
+        books.find((b) => (b.id === book.id))
+    )
+
+    mergeResults = myresults => {
+        
+          
+          let res = []
+          res = myresults.map(b => {     
+          
+              //let match = this.props.books.find(book => (book.id === b.id ))
+              let match2 = this.findBook(this.state.books,b)
+              if(match2){
+                  return match2
+                  //b.shelf = match.shelf
+                  //return b
+              }else{
+                return b    
+              }
+        
+          })
+          return res;
+            
+    }
+
+        
     // event onChange
     searchBooks = (query) => {
      
 
-        //this.props.book.shelf ? cShelf = this.props.book.shelf : cShelf = 'none'
-        //loop trough if book is in lib update shelf or ..
-          
+        if (query){
         this.setState({ query: query })
 
-        if (query){
-            
             BooksAPI.search(query, 20).then((searchResults) => {
-                                      
-                    if(searchResults.length > 0){
+                 
+            //this.setState({ results: this.mergeResults(myresults) })
+            console.log('merged')  
+
+            if(searchResults.length > 0){
 
                         let res = []
                         res = searchResults.map(b => {     
                             
-                            console.log(b)
+                            //console.log(b)
                             
                             let match = this.props.books.find(book => (book.id === b.id ))
                             if(match){
@@ -67,7 +94,8 @@ class SearchBooks extends Component{
                             error:true
                         })
                     }
-                    //searchResults.length > 0 ? this.setState() : this.setState({results:[]})
+                    searchResults.length > 0 ? this.setState() : this.setState({results:[]})
+
                     
             })
             
