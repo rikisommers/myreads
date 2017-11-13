@@ -6,12 +6,12 @@ import Book from './Book'
 class SearchBooks extends Component{
 
     render() {    
-    const { query, results, moveBook, searchBooks } = this.props
+    const { query, results, moveBook, searchBooks } = this.props;
 
         return(
-        
             <div className="search-books">
-            
+
+
                 <div className="header search-books-bar">
                     
                     <Link to="/" className="close-search">Close</Link>
@@ -32,12 +32,11 @@ class SearchBooks extends Component{
                 </div>
                        
                 <div className="search-books-results">
-
+                        
                     { results.length > 0 && (
                         <div>
 
-                            <p>Search for: { query }</p>
-
+                            <p className="search-query" >Search for: { query }</p>
                             <h5>{results.length} results found</h5>
 
                             <ol className="books-grid">

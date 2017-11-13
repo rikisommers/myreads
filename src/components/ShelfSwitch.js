@@ -4,11 +4,13 @@ import React, { Component } from 'react';
 class ShelfSwitch extends Component{
 
     render(){
-    const { book, moveBook } = this.props 
+    const { book, moveBook } = this.props;
         
-        // check if shelf is defined, set select value
+        // check if book has shelf else none -> set select value
         let cShelf = 'none'
-        this.props.book.shelf ? cShelf = this.props.book.shelf : cShelf = 'none'
+        if(this.props.book.shelf){
+            cShelf = this.props.book.shelf;
+        }
 
         return(
             <div className="book-shelf-changer">

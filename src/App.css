@@ -59,7 +59,6 @@ body, .app {
 .open-search {
   right:20px;
   right: 25px;
-
 }
 .open-search a {
   display: block;
@@ -78,6 +77,9 @@ body, .app {
 
 /* search page */
 
+.search-query{
+margin-bottom:0;
+}
 
 .search-books-input-wrapper {
   flex: 1;
