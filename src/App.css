@@ -6,13 +6,13 @@ body {
 }
 body, .app {
   background: lightcyan;
-  width:500px;
   overflow: scroll;
 }
 
 /* main page */
 
 .list-books-title,
+.search-books-bar,
 .header{
   position:fixed;
   display: flex;
@@ -23,14 +23,16 @@ body, .app {
   padding: 10px;
   background:#fff;
   box-shadow: 0px 3px 22px 0px rgba(0,0,0,0.37);
+  transition:all 300ms ease-out;
   
 }
 .header h1 {
   font-weight: 400;
   font-size:24px;
   line-height:40px;
+  
   margin:0;
-  color:turquoise;
+  color:blueviolet;
 }
 
 .list-books-content {
@@ -61,10 +63,10 @@ body, .app {
 }
 .open-search a {
   display: block;
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  background:turquoise;
+  background-color:blueviolet;
   background-image: url('./icons/add.svg');
   background-repeat: no-repeat;
   background-position: center;
@@ -76,22 +78,16 @@ body, .app {
 
 /* search page */
 
-.search-books-bar {
-  position: fixed;
-  width: 100%;
-  top: 0;
-  left: 0;
-  z-index: 5;
-  display: flex;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 0 6px rgba(0,0,0,0.23);
-}
+
 .search-books-input-wrapper {
   flex: 1;
   background: #e9e;
+  height:40px;
 }
 .search-books-bar input {
   width: 100%;
-  padding: 15px 10px;
+  padding: 0px 20px;
+  line-height:55px;
   font-size: 1.25em;
   border: none;
   outline: none;
@@ -104,6 +100,7 @@ body, .app {
   width: 50px;
   height: 53px;
   background: white;
+  fill:blueviolet;
   background-image: url('./icons/arrow-back.svg');
   background-position: center;
   background-repeat: no-repeat;
@@ -123,7 +120,7 @@ body, .app {
   margin: 0;
 
   display: flex;
-  justify-content: center;
+  justify-content:flex-start;
   flex-wrap: wrap;
 }
 .books-grid li {
@@ -133,6 +130,7 @@ body, .app {
 
 .book {
   width: 140px;
+  position: relative;
 }
 .book-title,
 .book-authors {
@@ -141,6 +139,19 @@ body, .app {
 .book-title {
   margin-top: 10px;
 }
+
+.book-shelf {
+  /* position: absolute;
+  top: 10px; */
+  color: white;
+  display:inline-block;
+  margin:8px 0;
+  background:blueviolet;
+  font-weight: 200;
+  padding:4px 8px;
+  border-radius:8px;
+}
+
 .book-authors {
   color: #999;
 }

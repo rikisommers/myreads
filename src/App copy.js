@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Route } from 'react-router-dom'
+import Notification, { notify } from 'react-notify-toast';
 import ListBooks from './components/ListBooks'
 import SearchBooks from './components/SearchBooks'
 import * as BooksAPI from './utils/BooksAPI'
@@ -7,7 +8,7 @@ import './App.css'
 
 
 class BooksApp extends Component {
-// TODO: use constructor
+
     state = {
       books:[],
       results:[],
@@ -32,41 +33,60 @@ class BooksApp extends Component {
       books.find((b) => (b.id === book.id))
     )
     
-    moveBook = (bookMoving, toShelf) => {
+    refreshResults(book, shelf){
+      this.setState(() => {
+        var index = this.state.results.indexOf(book);
+        this.state.results[index].shelf = shelf;
+      });
 
-      // TODO: add notifications
+    }
+
+    moveBook = (bookMoving, toShelf) => {
+         
       let message = bookMoving.title + ' moving to ' + toShelf
 
       BooksAPI.update(bookMoving, toShelf).then(() => (
         this.getBooks()
       ))
-      
-      this.rmvFromResults(bookMoving, toShelf)
-      // TODO : find a way to test if on search view
-      // if(this.state.results){
-      //   console.log(this.state.props)
-      //   this.refreshResults(bookMoving, toShelf)
-      // }else{
-      //   console.log(this.state.results)
-      // }
-      
-      
+
+      if(this.state.results.length > 0 ){
+        this.refreshResults(bookMoving, toShelf)
+      }
+
+      console.log(message)
     }
 
-    // TODO : remove merge from search
+    // mergeBooks = booksFromSearch => {
+    //   const shelfBooksIds = this.state.books.map(book => book.id);
+    //   let mergedBooks = [];
+
+    //   if (Array.isArray(booksFromSearch)) {
+    //     mergedBooks = booksFromSearch.map(searchedBook => {
+    //       if (shelfBooksIds.includes(searchedBook.id)) {
+    //         return this.state.books.find(shelfBook => shelfBook.id === searchedBook.id);
+    //       } else {
+    //         return searchedBook;
+    //       }
+    //     })
+    //   }
+
+    //   return mergedBooks;
+    // };
+
     searchBooks = (query) => {
+
+
       this.setState({ query: query })
       
       if (query.length > 0){
         BooksAPI.search(query, 20).then((results) => {
 
-            
+
             if(results.length > 0){
 
                 let res = []
                 res = results.map(b => {     
                     
-                    // merge books-in-myReads.shelf into results
                     let match = this.state.books.find(book => (book.id === b.id ))
                     if(match){
                         b.shelf = match.shelf
@@ -82,31 +102,16 @@ class BooksApp extends Component {
 
 
             }else{
-              this.clearResults()
+              this.setState({ results: []})
             }
            
         })
 
-      }else{        
-        this.clearResults()        
+      }else{
+        this.setState({ results:[]})
       }
     }
 
-
-    // RESULTS HELPERS
-    rmvFromResults = bookId => {
-      const resultsUpdate = this.state.results.filter(
-        book => book.id !== bookId
-      )
-      this.setState({ results: resultsUpdate })
-    }
-
-    refreshResults(bookMoving, toShelf){
-      this.setState(() => {
-        var index = this.state.results.indexOf(bookMoving)
-        this.state.results[index].shelf = toShelf
-      })
-    }
 
     clearResults = () => {
       this.setState({
@@ -116,12 +121,12 @@ class BooksApp extends Component {
     }
 
     render() {
-    const { books, results, query, searchErr} = this.state
+      const { books, results, query, searchErr} = this.state
 
         return (
             <div className="App">
-
-              <Route exact path='/search' render={() =>(
+              <Notification />
+              <Route exact path='/search' render={({history}) =>(
                 <SearchBooks
                   query = { query }      
                   results= { results }

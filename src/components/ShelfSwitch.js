@@ -1,14 +1,13 @@
 // Core
 import React, { Component } from 'react';
 
-
 class ShelfSwitch extends Component{
 
     render(){
     const { book, moveBook } = this.props 
-        // try setting in state
+    
         let cShelf = 'none'
-        // TODO :: loop all shelves set active
+        // TODO :: loop all categories and set active
         this.props.book.shelf ? cShelf = this.props.book.shelf : cShelf = 'none'
 
         return(

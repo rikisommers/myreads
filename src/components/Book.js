@@ -1,29 +1,26 @@
 // Core
-import React, { Component } from 'react';
-// Plugins
-import propTypes from 'prop-types'
-// Components
+import React, { Component } from 'react'
 import ShelfSwitch from './ShelfSwitch'
-
-
 
 class Book extends Component{
     
-    static propTypes = {
-        book: propTypes.object.isRequired,
-        moveBook: propTypes.func.isRequired
-    }
-
     render(){
     const { book, moveBook } = this.props 
-    //console.log(book)
-    //console.log(books)
+    let URL = 'http://via.placeholder.com/200x300'
+    if(book.imageLinks && book.imageLinks.thumbnail){
+        URL = book.imageLinks.thumbnail
+    }
+    
     return(
             <div className="book">
                 <div className="book-top">
                 <div 
                     className="book-cover" 
-                    style={{ width: 128, height: 193 }}></div>
+                    style={{ 
+                        width: 128,
+                        height: 193,
+                        backgroundImage:`url(${ URL })`
+                    }}></div>
             
                     <ShelfSwitch
                         book = { book }
@@ -33,12 +30,11 @@ class Book extends Component{
                 </div>
                 <div className="book-title">{ book.title }</div>
                 <div className="book-authors">{ book.subtitle }</div>
-                {
-                book.shelf ? 
-                <div className="book-authors">{ book.shelf }</div> 
-                : "not on a shelf dog"
-                }
-                
+
+                {book.shelf && ( 
+                <h5 className="book-shelf">{ book.shelf }</h5> 
+                )}
+            
             </div>
         )
     }

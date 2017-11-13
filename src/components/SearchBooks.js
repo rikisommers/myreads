@@ -1,31 +1,25 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import {DebounceInput} from 'react-debounce-input';
+import { DebounceInput } from 'react-debounce-input'
+import Notification, { notify } from 'react-notify-toast';
 import Book from './Book'
+
+//import Toast from './Toast'
 
 class SearchBooks extends Component{
 
-    render() {
-        
-        const { query, results, moveBook, searchBooks } = this.props
+    render() {    
+    const { query, results, moveBook, searchBooks } = this.props
 
         return(
         
             <div className="search-books">
-
-                <div className="search-books-bar">
+            
+                <div className="header search-books-bar">
                     
                     <Link to="/" className="close-search">Close</Link>
 
                     <div className="search-books-input-wrapper">
-
-                        {/* <input type="text" 
-                            placeholder='search books'
-                            value={ query }
-                            onChange={
-                                (e) => searchBooks(e.target.value)
-                            }
-                        /> */}
 
                         <DebounceInput
                         placeholder='search books'
@@ -36,52 +30,40 @@ class SearchBooks extends Component{
                             (e) => searchBooks(e.target.value)
                         }
                         />
-
             
                     </div>
                 </div>
-                
+                       
+                <div className="search-books-results">
 
-       
-                    <div className="search-books-results">
-           
-       
-                        
+                    { results.length > 0 && (
+                        <div>
 
-                        {console.log(results)}
+                            <p>Search for: { query }</p>
 
-                        { results.length > 0 && (
-                            <div>
-                            
-                                <h1>test</h1>
-                                <ol className="books-grid">
+                            <h5>{results.length} results found</h5>
 
-                                    {results.map(book => (
-                                        <li key={ book.id }>
-                                            <Book
-                                            book={ book }
-                                            moveBook={ moveBook }
-                                            /> 
-                                    </li>
-                                    ))}
+                            <ol className="books-grid">
 
-                                </ol>
-                            </div>
-                        )}
+                                {results.map(book => (
+                                    <li key={ book.id }>
+                                        <Book
+                                        book={ book }
+                                        moveBook={ moveBook }
+                                        /> 
+                                </li>
+                                ))}
 
-                        {/* {noResults ? <h3>No results found</h3> : (
-                        )} */}
-
-
-
+                            </ol>
+                        </div>
+                    )}
+                    <div>
+                        <h5>0 results found</h5>
                     </div>
 
-
+                </div>
             </div>
         )
-
     }
-    
-
 }
 export default SearchBooks

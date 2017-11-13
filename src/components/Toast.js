@@ -1,4 +1,4 @@
-import React, {Component} from 'React',
+import React, { Component } from 'react'
 
 class Toast extends Component {
 
@@ -13,3 +13,4 @@ class Toast extends Component {
         }
 
 }
+export default Toast

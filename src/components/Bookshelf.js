@@ -4,14 +4,14 @@ import Book from './Book'
 class Bookshelf extends Component{
 
     render(){
-    const { booksInShelf,catName,moveBook} = this.props 
+    const { shelvedBooks,catName,moveBook} = this.props 
         return( 
             <div className="bookshelf">
-              <h2 className="bookshelf-title">{ catName }</h2>
+              <h3 className="bookshelf-title">{ catName }</h3>
               <div className="bookshelf-books">
                 <ol className="books-grid">
 
-                  {booksInShelf.map(book => (
+                  {shelvedBooks.map(book => (
                     <li key={ book.id }>
                       <Book
                         book={ book }
