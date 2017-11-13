@@ -5,9 +5,9 @@ class ShelfSwitch extends Component{
 
     render(){
     const { book, moveBook } = this.props 
-    
+        
+        // check if shelf is defined, set select value
         let cShelf = 'none'
-        // TODO :: loop all categories and set active
         this.props.book.shelf ? cShelf = this.props.book.shelf : cShelf = 'none'
 
         return(

@@ -1,10 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { DebounceInput } from 'react-debounce-input'
-import Notification, { notify } from 'react-notify-toast';
 import Book from './Book'
-
-//import Toast from './Toast'
 
 class SearchBooks extends Component{
 

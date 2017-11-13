@@ -7,7 +7,7 @@ import './App.css'
 
 
 class BooksApp extends Component {
-// TODO: use constructor
+// TODO: use constructor, set propTypes
     state = {
       books:[],
       results:[],
@@ -35,25 +35,20 @@ class BooksApp extends Component {
     moveBook = (bookMoving, toShelf) => {
 
       // TODO: add notifications
-      let message = bookMoving.title + ' moving to ' + toShelf
+      //let message = bookMoving.title + ' moving to ' + toShelf
+      //console.log(message);
 
       BooksAPI.update(bookMoving, toShelf).then(() => (
         this.getBooks()
       ))
       
-      this.rmvFromResults(bookMoving, toShelf)
-      // TODO : find a way to test if on search view
-      // if(this.state.results){
-      //   console.log(this.state.props)
-      //   this.refreshResults(bookMoving, toShelf)
-      // }else{
-      //   console.log(this.state.results)
-      // }
-      
+      // TODO : find a way to refresh on search page only
+      // this.refreshResults(bookMoving, toShelf)
+      // this.rmvFromResults(bookMoving, toShelf)
       
     }
 
-    // TODO : remove merge from search
+    // TODO : remove merge from search and simplify
     searchBooks = (query) => {
       this.setState({ query: query })
       
@@ -94,6 +89,8 @@ class BooksApp extends Component {
 
 
     // RESULTS HELPERS
+
+    // remove bookMoving from results - only to show something is happening
     rmvFromResults = bookId => {
       const resultsUpdate = this.state.results.filter(
         book => book.id !== bookId
@@ -101,13 +98,15 @@ class BooksApp extends Component {
       this.setState({ results: resultsUpdate })
     }
 
+    // update bookMoving shelft title in results list
     refreshResults(bookMoving, toShelf){
-      this.setState(() => {
-        var index = this.state.results.indexOf(bookMoving)
-        this.state.results[index].shelf = toShelf
+      this.setState(state => {
+        var index = state.results.indexOf(bookMoving)
+        state.results[index].shelf = toShelf
       })
     }
 
+    // reset results
     clearResults = () => {
       this.setState({
           query:'',
