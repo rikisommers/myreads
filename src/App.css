@@ -86,6 +86,7 @@ margin-bottom:0;
   background: #e9e;
   height:40px;
 }
+
 .search-books-bar input {
   width: 100%;
   padding: 0px 20px;
@@ -115,7 +116,6 @@ margin-bottom:0;
 }
 
 /* books grid */
-
 .books-grid {
   list-style-type: none;
   padding: 0;
@@ -172,8 +172,8 @@ margin-bottom:0;
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: #60ac5d;
-  background-image: url('./icons/arrow-drop-down.svg');
+background:#119990; /* Old browsers */
+background-image: url('./icons/arrow-drop-down.svg');
   background-repeat: no-repeat;
   background-position: center;
   background-size: 20px;
