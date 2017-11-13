@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Route } from 'react-router-dom'
-import Notifications, {notify} from 'react-notify-toast';
+//import Notifications, {notify} from 'react-notify-toast';
 import ListBooks from './components/ListBooks'
 import SearchBooks from './components/SearchBooks'
 import * as BooksAPI from './utils/BooksAPI'
@@ -44,11 +44,9 @@ class BooksApp extends Component {
         this.getBooks();
       });
       
-      notify.show('Toasty!');
-
+      //notify.show(message);
       // TODO : find a way to refresh results (shelf) on search page only
       // this.refreshResults(bookMoving, toShelf)
-      // this.rmvFromResults(bookMoving, toShelf)
       
     }
 
@@ -90,14 +88,7 @@ class BooksApp extends Component {
       }
     }
 
-
     // RESULTS HELPERS
-    // remove bookMoving from results - only to show something is happening
-    rmvFromResults = bookId => {
-      const resultsUpdate = this.state.results.filter(book => book.id !== bookId);
-      this.setState({ results: resultsUpdate });
-    }
-
     // update bookMoving shelft title in results list
     refreshResults(bookMoving, toShelf){
       this.setState(state => {
@@ -119,7 +110,6 @@ class BooksApp extends Component {
 
         return (
             <div className="App">
-              <Notifications />
               <Route exact path='/search' render={() =>(
                 <SearchBooks
                   query = { query }      
