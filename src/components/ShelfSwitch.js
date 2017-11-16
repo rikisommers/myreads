@@ -1,15 +1,15 @@
 // Core
-import React, { Component } from 'react';
+import React from 'react';
 
-class ShelfSwitch extends Component{
-
-    render(){
-    const { book, moveBook } = this.props;
+const ShelfSwitch = (props) => {
+//function ShelfSwitch(props){
+        
+    const { book, moveBook } = props;
         
         // check if book has shelf else none -> set select value
         let cShelf = 'none'
-        if(this.props.book.shelf){
-            cShelf = this.props.book.shelf;
+        if(props.book.shelf){
+            cShelf = props.book.shelf;
         }
 
         return(
@@ -27,7 +27,7 @@ class ShelfSwitch extends Component{
                 </select>
             </div>
         )
-    }
+    
 }
 
 export default ShelfSwitch

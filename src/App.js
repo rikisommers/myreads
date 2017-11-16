@@ -46,7 +46,7 @@ class BooksApp extends Component {
       
       //notify.show(message);
       // TODO : find a way to refresh results (shelf) on search page only
-      // this.refreshResults(bookMoving, toShelf)
+      // this.updateResults(bookMoving, toShelf)
       
     }
 
@@ -90,7 +90,7 @@ class BooksApp extends Component {
 
     // RESULTS HELPERS
     // update bookMoving shelft title in results list
-    refreshResults(bookMoving, toShelf){
+    upadteResults(bookMoving, toShelf){
       this.setState(state => {
         let index = state.results.indexOf(bookMoving)
         state.results[index].shelf = toShelf

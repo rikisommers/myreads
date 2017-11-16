@@ -1,15 +1,14 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom'
 import Bookshelf from './Bookshelf'
 
-class ListBooks extends Component{
-
-    render(){
-    const { books, moveBook, categories } = this.props;
-     
-        return(
+const ListBooks = (props) => {
+//function ListBooks(props){
+    const { books, moveBook, categories } = props;
+    
+    return (
         <div className="list-books">
-
+        
             <div className="header">
                 <h1>MyReads</h1>
                 <div className="open-search">
@@ -34,10 +33,20 @@ class ListBooks extends Component{
                 })}
 
             </div> 
-
+        
         </div>
-        )
-    }
+    )
 }
+
+// class ListBooks extends Component{
+
+//     render(){
+//     const { books, moveBook, categories } = this.props;
+     
+//         return(
+        
+//         )
+//     }
+// }
 
 export default ListBooks

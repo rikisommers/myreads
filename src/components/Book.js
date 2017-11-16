@@ -1,11 +1,11 @@
 // Core
-import React, { Component } from 'react'
+import React from 'react'
 import ShelfSwitch from './ShelfSwitch'
 
-class Book extends Component{
+const Book = (props) => {
+//function Book(props){
     
-    render(){
-    const { book, moveBook } = this.props;
+    const { book, moveBook } = props;
 
     // check if book has imgURL else use placeholder
     let URL = 'http://via.placeholder.com/200x300';
@@ -37,7 +37,7 @@ class Book extends Component{
             
             </div>
         )
-    }
+    
 }
 
 export default Book
