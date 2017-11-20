@@ -1,11 +1,11 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 import { DebounceInput } from 'react-debounce-input'
 import Book from './Book'
 
-class SearchBooks extends Component{
-
-    render() {    
+const SearchBooks = (props) => {
+    //function Book(props){
+ 
     const { query, results, moveBook, searchBooks } = this.props;
 
         return(
@@ -60,6 +60,6 @@ class SearchBooks extends Component{
                 </div>
             </div>
         )
-    }
+
 }
 export default SearchBooks

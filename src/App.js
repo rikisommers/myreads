@@ -17,7 +17,7 @@ class BooksApp extends Component {
       categories: [{cat:'currentlyReading', name:'currently reading'},{cat:'wantToRead', name:'want to read'},{cat:'read', name:'read'}],
       query:''
     }
-
+  
     componentDidMount() {
       this.getBooks();
     }
@@ -40,15 +40,31 @@ class BooksApp extends Component {
       let message = bookMoving.title + ' moving to ' + toShelf;
       console.log(message);
 
-      BooksAPI.update(bookMoving, toShelf).then(() => {
-        this.getBooks();
-      });
+      // shoudn't need to refresh data from backend every time a book is updated.
+      //BooksAPI.update(bookMoving, toShelf).then(() => {
+        //this.getBooks();
+      //});
+
+      if(bookMoving.shelf !== toShelf){
+        BooksAPI.update(bookMoving, toShelf).then(() => {
+              
+              // console.log(bookMosving.id)
+              // Filter out the book and append it to the end of the list
+              // so it appears at the end of whatever shelf it was added to.
+
+              this.setState(state => ({
+                books: state.books.filter(b => b.id !== bookMoving.id).concat([bookMoving])
+              }));
+
+        });
+      }
+
       
       //notify.show(message);
       // TODO : find a way to refresh results (shelf) on search page only
       // this.updateResults(bookMoving, toShelf)
       
-    }
+    };
 
     // TODO : remove merge from search and simplify
     searchBooks = (query) => {
@@ -108,7 +124,25 @@ class BooksApp extends Component {
     render() {
     const { books, categories, results, query } = this.state
 
+        // const data = [
+        //     { name: 'Tyler', favoriteIceCreams: ['Strawberry', 'Vanilla', 'Chocolate', 'Cookies & Cream'] },
+        //     { name: 'Richard', favoriteIceCreams: ['Cookies & Cream', 'Mint Chocolate Chip', 'Chocolate', 'Vanilla'] },
+        //     { name: 'Amanda', favoriteIceCreams: ['Chocolate', 'Rocky Road', 'Pistachio', 'Banana'] },
+        //     { name: 'Andrew', favoriteIceCreams: ['Vanilla', 'Chocolate', 'Mint Chocolate Chip'] },
+        //     { name: 'David', favoriteIceCreams: ['Vanilla', 'French Vanilla', 'Vanilla Bean', 'Strawberry'] },
+        //     { name: 'Karl', favoriteIceCreams: ['Strawberry', 'Chocolate', 'Mint Chocolate Chip'] }
+        // ];
+        // const res2 = data.reduce(( t, i ) => {
+        //       i.favoriteIceCreams.map((val) => {
+        //         t[val] = (t[val] || 0) + 1;
+        //       });
+        //       return t;
+        // },{});
+        // console.log(res2);  
+        
+
         return (
+
             <div className="App">
               <Route exact path='/search' render={() =>(
                 <SearchBooks
